@@ -77,12 +77,14 @@ class Game {
     * @param shot {Shot} Shot to be removed
     */
 
-    removeShot (shot) {
+    removeShot(shot) {
         const shotsArray = shot.type === "PLAYER" ? this.playerShots : this.opponentShots,
             index = shotsArray.indexOf(shot);
-
+    
         if (index > -1) {
-            shotsArray.splice(index, 1);
+            shotsArray.splice(index, 1);  // Elimina el disparo del array
+            document.body.removeChild(shot.image);  // Elimina el disparo del DOM
+            console.log('Disparo eliminado');  // Debugging
         }
     }
 
@@ -91,10 +93,13 @@ class Game {
      */
     removeOpponent() {
         if (this.opponent) {
+            console.log('Eliminando al oponente anterior');
             document.body.removeChild(this.opponent.image);  // Elimina la imagen del oponente actual
+            this.opponent = null;  // Elimina la referencia del oponente
         }
+    
         console.log('Creando un nuevo oponente');
-        this.opponent = new Opponent(this);  // Crea un nuevo oponente
+        this.opponent = new Opponent(this);  // Crear un nuevo oponente normal
     }
 
     /**
@@ -189,11 +194,15 @@ class Game {
         for (let i = 0; i < this.playerShots.length; i++) {
             if (this.hasCollision(this.opponent, this.playerShots[i])) {
                 killed = true;
-                console.log('Colisión detectada con el oponente'); // Debugging
+                console.log('Colisión detectada con el oponente');
                 this.opponent.collide(this.playerShots[i]);  // Pasamos el disparo específico
                 this.removeShot(this.playerShots[i]);  // Elimina el disparo después de la colisión
                 break;  // Salimos del bucle al detectar la colisión
             }
+        }
+    
+        if (killed) {
+            this.opponent.collide();  // Asegúrate de que el oponente colisione y luego se llame al método die
         }
     }
 
@@ -239,19 +248,27 @@ class Game {
     /**
      * Update the game elements
      */
-    update () {
+    update() {
+        console.log('Ciclo de actualización ejecutándose');
+    
         if (!this.ended) {
             this.player.update();
+            
             if (this.opponent === undefined) {
-                this.opponent = new Opponent(this);
+                console.log('No hay oponente, creando uno nuevo');
+                this.removeOpponent();  // Crea un nuevo oponente si no hay
+            } else {
+                this.opponent.update();  // Actualiza el oponente si existe
             }
-            this.opponent.update();
+    
             this.playerShots.forEach((shot) => {
                 shot.update();
             });
+    
             this.opponentShots.forEach((shot) => {
                 shot.update();
             });
+    
             this.checkCollisions();
             this.render();
         }

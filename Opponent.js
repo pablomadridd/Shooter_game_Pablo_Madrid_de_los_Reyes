@@ -81,9 +81,10 @@ class Opponent extends Character {
     
         // Después de 2 segundos, elimina al oponente y crea uno nuevo
         setTimeout(() => {
-            this.remove();  // Elimina el oponente
+            this.remove();  // Elimina el oponente del DOM
             console.log('Oponente eliminado');
-            this.game.removeOpponent();  // Llama a la función para generar un nuevo oponente
+            this.game.opponent = null;  // Elimina la referencia al oponente en el juego
+            this.game.removeOpponent();  // Crea un nuevo oponente
         }, 2000);  // Tiempo que la estrella permanece visible
     }
 }
