@@ -3,32 +3,34 @@ html {
   }
   
   .Opponent {
-	  animation: rotation 3s infinite linear; /* Animación estándar */
+	  animation: rotation 3s infinite linear;
+	  -webkit-animation: rotation 3s infinite linear;
   }
   
   .paused .Opponent {
-	  animation: none; /* Detener animación cuando el juego está en pausa */
+	  animation: none;
+	  -webkit-animation: none;
   }
   
   /* Prefijo webkit para navegadores antiguos */
   @-webkit-keyframes rotation {
 	  from {
+		  transform: rotate(0deg);
 		  -webkit-transform: rotate(0deg);
-		  transform: rotate(0deg); /* Animación estándar */
 	  }
 	  to {
+		  transform: rotate(359deg);
 		  -webkit-transform: rotate(359deg);
-		  transform: rotate(359deg); /* Animación estándar */
 	  }
   }
   
   /* Animación estándar para navegadores modernos */
   @keyframes rotation {
 	  from {
-		  transform: rotate(0deg); /* Animación estándar */
+		  transform: rotate(0deg);
 	  }
 	  to {
-		  transform: rotate(359deg); /* Animación estándar */
+		  transform: rotate(359deg);
 	  }
   }
   
@@ -41,3 +43,4 @@ html {
 	  font-family: monospace;
 	  cursor: pointer;
   }
+  

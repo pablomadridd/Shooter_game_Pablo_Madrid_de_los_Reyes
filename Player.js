@@ -18,6 +18,7 @@ class Player extends Character {
             myImageDead = PLAYER_PICTURE_DEAD;
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
+        this.lives = INITIAL_LIVES;  // Inicializa el atributo de vidas
     }
 
     /**
@@ -48,10 +49,25 @@ class Player extends Character {
      */
     collide() {
         if (!this.dead) {
-            setTimeout(() => {
-                this.game.endGame();
-            }, 2000);
-            super.collide();
+            this.lives--;  // Reducir una vida
+            this.game.updateLives();  // Actualiza el contador de vidas en la pantalla
+    
+            if (this.lives > 0) {
+                console.log(`Jugador golpeado, le quedan ${this.lives} vidas`);
+                
+                // El jugador "muere" temporalmente y revive después de 2 segundos
+                this.image.src = this.myImageDead;  // Cambia la imagen a "muerto"
+                this.dead = true;  // Marca al jugador como muerto
+                setTimeout(() => {
+                    this.image.src = this.myImage;  // Revive después de 2 segundos
+                    this.dead = false;  // Marca al jugador como vivo de nuevo
+                }, 2000);
+            } else {
+                console.log('Jugador sin vidas, fin del juego');
+                // Si no tiene vidas, muere permanentemente
+                super.collide();  // Llama al método de la clase padre para manejar la muerte
+                this.game.endGame();  // Finaliza el juego
+            }
         }
     }
 }

@@ -295,4 +295,8 @@ class Game {
         document.getElementById('scoreli').innerHTML = `Score: ${this.score}`;
     }
 
+    updateLives() {
+        document.getElementById('livesli').innerHTML = `Lives: ${this.player.lives}`;
+    }
+
 }
