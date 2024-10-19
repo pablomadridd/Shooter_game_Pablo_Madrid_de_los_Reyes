@@ -17,6 +17,7 @@ class Game {
         this.opponentShots = []; // Shots fired by the opponent
         this.xDown = null; // Position where the user touched the screen
         this.paused = false; // Indicates whether the game is paused
+        this.score = 0; // Inicializamos el puntaje en 0
     }
 
 
@@ -88,11 +89,12 @@ class Game {
     /**
      * Remove the opponent from the game
      */
-    removeOpponent () {
+    removeOpponent() {
         if (this.opponent) {
-            document.body.removeChild(this.opponent.image);
+            document.body.removeChild(this.opponent.image);  // Elimina la imagen del oponente actual
         }
-        this.opponent = new Opponent(this);
+        console.log('Creando un nuevo oponente');
+        this.opponent = new Opponent(this);  // Crea un nuevo oponente
     }
 
     /**
@@ -172,20 +174,26 @@ class Game {
 
     checkCollisions () {
         let impact = false;
-
+    
+        // Verifica si el jugador ha sido golpeado por un disparo del oponente
         for (let i = 0; i < this.opponentShots.length; i++) {
             impact = impact || this.hasCollision(this.player, this.opponentShots[i]);
         }
         if (impact || this.hasCollision(this.player, this.opponent)) {
             this.player.collide();
         }
+    
+        // Verifica si el oponente ha sido golpeado por un disparo del jugador
         let killed = false;
-
+    
         for (let i = 0; i < this.playerShots.length; i++) {
-            killed = killed || this.hasCollision(this.opponent, this.playerShots[i]);
-        }
-        if (killed) {
-            this.opponent.collide();
+            if (this.hasCollision(this.opponent, this.playerShots[i])) {
+                killed = true;
+                console.log('Colisión detectada con el oponente'); // Debugging
+                this.opponent.collide(this.playerShots[i]);  // Pasamos el disparo específico
+                this.removeShot(this.playerShots[i]);  // Elimina el disparo después de la colisión
+                break;  // Salimos del bucle al detectar la colisión
+            }
         }
     }
 
@@ -264,4 +272,10 @@ class Game {
             shot.render();
         });
     }
+
+    // Método para actualizar el puntaje en la pantalla
+    updateScore() {
+        document.getElementById('scoreli').innerHTML = `Score: ${this.score}`;
+    }
+
 }
