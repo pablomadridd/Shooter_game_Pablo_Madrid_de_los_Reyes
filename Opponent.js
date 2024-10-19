@@ -60,17 +60,16 @@ class Opponent extends Character {
     }
 
     collide(shot) {
-        if (shot.type === 'PLAYER') {  // Solo si el disparo es del jugador
-            console.log('Oponente golpeado por disparo del jugador');
-            
-            // Aumentar el puntaje
+        if (shot.type === 'PLAYER') {
             this.game.score += 1; 
             this.game.updateScore();
-    
-            // El oponente debería morir
             this.die();
+            setTimeout(() => {
+                this.game.removeOpponent();
+            }, 2000);  // Tiempo que la imagen de muerte permanece visible
         }
     }
+    
 
     die() {
         console.log('El oponente ha muerto y se convierte en estrella');
@@ -86,5 +85,12 @@ class Opponent extends Character {
             this.game.opponent = null;  // Elimina la referencia al oponente en el juego
             this.game.removeOpponent();  // Crea un nuevo oponente
         }, 2000);  // Tiempo que la estrella permanece visible
+    }
+
+    render() {
+        this.image.style.top = `${this.y}px`;
+        this.image.style.left = `${this.x}px`;
+        this.image.style.width = `${this.width}px`;
+        this.image.style.height = `${this.height}px`;
     }
 }
