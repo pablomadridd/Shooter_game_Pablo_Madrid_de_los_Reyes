@@ -98,8 +98,11 @@ class Game {
             this.opponent = null;  // Elimina la referencia del oponente
         }
     
-        console.log('Creando un nuevo oponente');
-        this.opponent = new Opponent(this);  // Crear un nuevo oponente normal
+        // Si el puntaje es 1, creamos al jefe final
+        if (this.score === 1) {  // Usamos 1 como umbral para que aparezca el jefe final tras el primer oponente
+            console.log('Creando al jefe final');
+            this.opponent = new Boss(this);  // Crear al jefe final
+        }
     }
 
     /**
@@ -232,9 +235,12 @@ class Game {
     /**
      * End the game
      */
-    endGame () {
+    endGame() {
         this.ended = true;
-        let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, GAME_OVER_PICTURE)
+    
+        let imageToShow = this.player.lives > 0 && this.opponent instanceof Boss ? "assets/you_win.png" : GAME_OVER_PICTURE;
+        
+        let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, imageToShow);
         gameOver.render();
     }
 
