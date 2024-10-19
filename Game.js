@@ -98,10 +98,13 @@ class Game {
             this.opponent = null;  // Elimina la referencia del oponente
         }
     
-        // Si el puntaje es 1, creamos al jefe final
-        if (this.score === 1) {  // Usamos 1 como umbral para que aparezca el jefe final tras el primer oponente
+        // Condición para crear el jefe final después de eliminar el primer oponente
+        if (this.score === 1) {  // Ajustamos el umbral al primer oponente eliminado
             console.log('Creando al jefe final');
             this.opponent = new Boss(this);  // Crear al jefe final
+        } else {
+            console.log('Creando un nuevo oponente');
+            this.opponent = new Opponent(this);  // Seguir creando triángulos solo antes del primer oponente eliminado
         }
     }
 

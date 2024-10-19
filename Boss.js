@@ -9,6 +9,6 @@ class Boss extends Opponent {
               myImageDead = "assets/boss_dead.png";  // Imagen cuando el jefe muere
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
-        this.direction = "R"; // El jefe también se mueve de izquierda a derecha
+        this.direction = "R"; // El jefe también se mueve
     }
 }
